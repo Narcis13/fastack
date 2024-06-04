@@ -3,7 +3,7 @@
  */
 
 import { H3Event } from "h3";
-import type { JSONResponse } from "~~/iam/misc/types";
+import { JSONResponse } from "~~/iam/misc/types";
 
 
 /**
@@ -13,7 +13,7 @@ import type { JSONResponse } from "~~/iam/misc/types";
  */
 export async function index(event: H3Event): Promise<JSONResponse> {
   const response = {} as JSONResponse;  
-  //console.log('index doodads',event)
+  
   const info = "get all doodads"  
   response.status = "success";
   response.data = {
