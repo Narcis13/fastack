@@ -9,5 +9,5 @@ export default defineNuxtConfig({
     }
     
   },
-  modules: ['@pinia/nuxt', "nuxt-quasar-ui", "@nuxtjs/supabase"]
+  modules: ['@pinia/nuxt', "nuxt-quasar-ui"]
 })

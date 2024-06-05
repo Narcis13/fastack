@@ -55,8 +55,8 @@
         class="bg-grey-2"
         :width="240"
       >
-  
-        <!-- <contabil-meniu-contabil v-if="utilizatorStore.eAutentificat&&utilizatorStore.utilizator.rol=='contabil'"/> -->
+       <meniu />
+      
        
       </q-drawer>
   
