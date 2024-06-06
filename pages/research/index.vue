@@ -1,11 +1,31 @@
 <script setup>
+import { useQuasar } from 'quasar'
+const $q = useQuasar()
+
 
 const model=ref("llama3")
-const description=ref("")
+const description=ref("You are going to create extremely good and captivating videos about ")
 const topic = ref()
 
-function research(){
+async function research(){
     console.log('reseraching....')
+    $q.loading.show({
+        delay: 400 // ms
+        })
+
+
+    let response=  await $fetch("/api/ai/videosearch", {
+        method: "POST",
+        headers: {
+         
+        },
+        body: {
+          model:model.value,
+          topic:topic.value,  
+          description:description.value       },
+      });
+      $q.loading.hide()
+     console.log(response) 
 }
 </script>
 

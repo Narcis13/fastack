@@ -9,10 +9,10 @@ const openai = new OpenAI({
 
 export default defineEventHandler(async (event) =>{
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "You are a very talented marketer. Come up please with 10 ideas for content about a new AI app for accountants!" }],
+    messages: [{ role: "system", content: "You are a very talented marketer. Come up please with 10 popular long tail kewords for the topic specified by user" },{role:"user", content:"Topic:subconscious mind. I expect output in JSON format with template {keywords:[keyword1,keyword2,...]}"}],
     model: "gpt-4o",
   });
 
-    return {text:completion.choices[0].message.content}
+    return {response:completion.choices[0].message.content}
 
   })

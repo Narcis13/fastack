@@ -9,5 +9,13 @@ export default defineNuxtConfig({
     }
     
   },
-  modules: ['@pinia/nuxt', "nuxt-quasar-ui"]
+  modules: ['@pinia/nuxt', "nuxt-quasar-ui"],
+  
+  quasar:{
+    plugins: [
+      'Notify',
+      'Dialog',
+      'Loading'
+    ]
+  }
 })
