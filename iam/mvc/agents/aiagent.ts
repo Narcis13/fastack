@@ -14,16 +14,16 @@ export default async function airunner(model:string,systemprompt:string,userprom
     } = {
         response: null // or provide an appropriate initial value
     };
-if(model==='openai'){
+if(model==='gpt-4o'||model==='gpt-3.5-turbo'){
     const completion = await openai.chat.completions.create({
         messages: [{ role: "system", content: systemprompt },{role:"user", content:userprompt}],
-        model: "gpt-4o",
+        model: model,
       });
 
       response.response=completion.choices[0].message.content;
 }
 
-if(model==='llama3'){
+if(model==='llama3'||model==='zephyr'){
     response=await ollama.generate({
         model: model,
         system: systemprompt, 

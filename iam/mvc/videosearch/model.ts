@@ -55,8 +55,10 @@ export async function create(event: H3Event): Promise<JSONResponse> {
     prompt: `topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON, using this template: {titles: ['title1', 'title2']}`,
   })
 */
-  const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else, using this template: {titles: ['title1', 'title2']}`)
-  const titlelist = djson.parse(rawtitlelist.response);
+  
+const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else, using this template: {titles: ['title1', 'title2']}`)
+console.log(rawtitlelist)
+const titlelist = djson.parse(rawtitlelist.response);
 
   /*const rawnewdescription = await ollama.generate({
     model: "llama3",
@@ -67,7 +69,7 @@ export async function create(event: H3Event): Promise<JSONResponse> {
 
   const rawnewdescription = await airunner(model,descriptionprompt,` topic: ${topic}\nDescription: ${details}\n Output as JSON only without anything else, using this template: \n\n{'output': 'description of the video'} `)
   const newdescription = djson.parse(rawnewdescription.response).output;
-//console.log(rawnewdescription)
+console.log(rawnewdescription)
   
   /*const rawemail = await ollama.generate({
     model: "llama3",
@@ -77,7 +79,7 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   });*/
 
   const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, using this template: \n{'output': 'text of the email'}`)
-  //console.log(rawemail)
+  console.log(rawemail)
   const email = djson.parse(rawemail.response).output;
   
   //console.log(`Email for the video based on the generated description: \n${email}\n\n`);
