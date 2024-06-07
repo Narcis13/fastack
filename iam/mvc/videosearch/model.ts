@@ -5,7 +5,7 @@
 import { H3Event } from "h3";
 //import ollama from "ollama";
 import type { JSONResponse } from "~~/iam/misc/types";
-import { titleprompt, descriptionprompt, announcementprompt } from "~~/utils/media/prompts";
+import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt} from "~~/utils/media/prompts";
 import * as djson from "dirty-json";
 import {  videoSearchTool, videoDetailsTool } from "~~/utils/media/videoSearchTools";
 import airunner from "../agents/aiagent";
@@ -55,9 +55,13 @@ export async function create(event: H3Event): Promise<JSONResponse> {
     prompt: `topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON, using this template: {titles: ['title1', 'title2']}`,
   })
 */
+const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else, using this template: {keywords: ['keyword1', 'keyword2']}`)
+//console.log(rawtitlelist)
+const keywordlist = djson.parse(rawkeywordlist.response);
+
   
 const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else, using this template: {titles: ['title1', 'title2']}`)
-console.log(rawtitlelist)
+//console.log(rawtitlelist)
 const titlelist = djson.parse(rawtitlelist.response);
 
   /*const rawnewdescription = await ollama.generate({
@@ -69,7 +73,7 @@ const titlelist = djson.parse(rawtitlelist.response);
 
   const rawnewdescription = await airunner(model,descriptionprompt,` topic: ${topic}\nDescription: ${details}\n Output as JSON only without anything else, using this template: \n\n{'output': 'description of the video'} `)
   const newdescription = djson.parse(rawnewdescription.response).output;
-console.log(rawnewdescription)
+//console.log(rawnewdescription)
   
   /*const rawemail = await ollama.generate({
     model: "llama3",
@@ -79,7 +83,7 @@ console.log(rawnewdescription)
   });*/
 
   const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, using this template: \n{'output': 'text of the email'}`)
-  console.log(rawemail)
+  //console.log(rawemail)
   const email = djson.parse(rawemail.response).output;
   
   //console.log(`Email for the video based on the generated description: \n${email}\n\n`);
@@ -91,7 +95,8 @@ console.log(rawnewdescription)
     scoredVideos,
     titlelist:`Successful Titles for the topic: ${topic}\n\n${titlelist.titles.map((s: string) => `- ${s}`).join("\n")}\n\n`,
     newdescription,
-    email
+    email,
+    keywordlist
   };
 
 
