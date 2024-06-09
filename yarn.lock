@@ -6023,6 +6023,11 @@ yargs@^17.5.1:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
+youtube-transcript@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/youtube-transcript/-/youtube-transcript-1.2.1.tgz"
+  integrity sha512-TvEGkBaajKw+B6y91ziLuBLsa5cawgowou+Bk0ciGpjELDfAzSzTGXaZmeSSkUeknCPpEr/WGApOHDwV7V+Y9Q==
+
 zhead@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmjs.org/zhead/-/zhead-2.2.4.tgz"

@@ -16,6 +16,7 @@ type VideoDetails = {
   commentCount: number;
   subscriberCount: number;
   score: number;
+  videoUrl?:string;
 }
 
 
@@ -26,7 +27,7 @@ export const videoSearchTool = async (topic: string, maxResults: number = 35): P
   topic = encodeURIComponent(topic);
   const apiKey = useRuntimeConfig().youtube_api_key;
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${maxResults}&q=${topic}&type=video&key=${apiKey}`;
-console.log(apiKey)
+//console.log(apiKey)
   const response = await fetch(url);
   const data = await response.json();
 
@@ -80,7 +81,8 @@ export const videoDetailsTool = async (video: VideoSearchResults): Promise<Video
     likeCount,
     commentCount,
     subscriberCount,
-    score
+    score,
+    videoUrl
   };
 }
 

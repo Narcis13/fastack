@@ -8,6 +8,7 @@ import type { JSONResponse } from "~~/iam/misc/types";
 import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt} from "~~/utils/media/prompts";
 import * as djson from "dirty-json";
 import {  videoSearchTool, videoDetailsTool } from "~~/utils/media/videoSearchTools";
+import { YoutubeTranscript } from 'youtube-transcript';
 import airunner from "../agents/aiagent";
 /**
  * @desc Shows all doodads
@@ -48,55 +49,50 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   
   scoredVideos = scoredVideos.sort((a, b) => b.score - a.score).slice(0, 15);
 
-  /*const rawtitlelist = await ollama.generate({
-    model: "llama3",
-    system: titleprompt, 
-    format: "json",
-    prompt: `topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON, using this template: {titles: ['title1', 'title2']}`,
-  })
-*/
-const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else, using this template: {keywords: ['keyword1', 'keyword2']}`)
+  let transcript1=''
+  const textjson1= await YoutubeTranscript.fetchTranscript('https://www.youtube.com/watch?v=7Ujs5NSnnVE')
+     textjson1.map(t=>{
+       transcript1+=t.text+' '
+     })
+
+const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else ,without json key just parseble json object , using this template: {keywords: ['keyword1', 'keyword2']}`)
 //console.log(rawtitlelist)
-const keywordlist = djson.parse(rawkeywordlist.response);
+let keywordlist :{keywords:string[]}= {keywords:[]}
+try {
+  keywordlist=djson.parse(rawkeywordlist.response);
+} catch (e) {
+  console.log(e)
+}
+
+const keywordslist = (keywordlist.keywords.length>0)? keywordlist.keywords.join("\n"):""
+      
 
   
-const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else, using this template: {titles: ['title1', 'title2']}`)
-//console.log(rawtitlelist)
+const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else,,without json key just parseble json object, using this template: {titles: ['title1', 'title2']}`)
+
 const titlelist = djson.parse(rawtitlelist.response);
 
-  /*const rawnewdescription = await ollama.generate({
-    model: "llama3",
-    system: descriptionprompt,
-    format: "json",
-    prompt: ` topic: ${topic}\nDescription: ${details}\n Output as JSON, using this template: \n\n{'output': 'description of the video'} `
-  });*/
+//console.log(rawtitlelist)
 
-  const rawnewdescription = await airunner(model,descriptionprompt,` topic: ${topic}\nDescription: ${details}\n Output as JSON only without anything else, using this template: \n\n{'output': 'description of the video'} `)
+  const rawnewdescription = await airunner(model,descriptionprompt,` topic: ${topic}\nDescription: ${details}\n Output as JSON only without anything else, ,without json key just parseble json object, using this template: \n Long tail keywords to be included:${keywordslist}\n{'output': 'description of the video'} `)
   const newdescription = djson.parse(rawnewdescription.response).output;
-//console.log(rawnewdescription)
-  
-  /*const rawemail = await ollama.generate({
-    model: "llama3",
-    system: announcementprompt,
-    format: "json",
-    prompt: `topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON, using this template: \n{'output': 'text of the email'}`,
-  });*/
 
-  const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, using this template: \n{'output': 'text of the email'}`)
-  //console.log(rawemail)
+  //console.log(rawnewdescription)
+
+
+  const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, ,without json key just parseble json object, using this template: \n{'output': 'text of the email'}`)
+
   const email = djson.parse(rawemail.response).output;
   
-  //console.log(`Email for the video based on the generated description: \n${email}\n\n`);
 
-
- // const info = "create a doodad"  
   response.status = "success";
   response.data = {
     scoredVideos,
     titlelist:`Successful Titles for the topic: ${topic}\n\n${titlelist.titles.map((s: string) => `- ${s}`).join("\n")}\n\n`,
     newdescription,
     email,
-    keywordlist
+    keywordslist,
+    transcript1
   };
 
 

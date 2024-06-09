@@ -4,8 +4,8 @@ It is very important to use the list of videos to help you generate the titles.
 The titles should be less than 70 characters and should have a high click-through-rate.`
 
 export const descriptionprompt = `Create a great description for a video based on the information provided by the user.
- This description will be add to the video on YouTube when it is submitted. 
- The description should be 200 to 500 words. 
+ This description will be added to the video on YouTube when it is submitted. 
+ The description should be 200 to 500 words and is mandatory to include long tail keywords provided by the user. 
  At the end, include something convincing to encourage the user to subscribe to the newsletter .`
 
 export const announcementprompt = `Every time I have a new video, I like to send out an email to my subscribers. 
@@ -15,5 +15,5 @@ Please create an email to send to that list based on the topic and description p
   The email should be signed off from me, Narcissus.`
 
   export const keywordsprompt = `You will be given a topic and a description for an Youtube video. 
-  Come up with 5 long tail popular keywords for ranking higher this video in search algoritm.
+  Come up with 3 long tail popular keywords for ranking higher this video in search algorithm.
   Take in consideration virality potential.`

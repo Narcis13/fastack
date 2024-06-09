@@ -21,7 +21,8 @@
     "openai": "^4.47.2",
     "quasar": "^2.16.4",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "youtube-transcript": "^1.2.1"
   },
   "devDependencies": {
     "prisma": "^5.14.0"
