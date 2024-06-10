@@ -49,11 +49,33 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   
   scoredVideos = scoredVideos.sort((a, b) => b.score - a.score).slice(0, 15);
 
+/*    TRANSCRIPTIONS      */ 
   let transcript1=''
-  const textjson1= await YoutubeTranscript.fetchTranscript('https://www.youtube.com/watch?v=7Ujs5NSnnVE')
-     textjson1.map(t=>{
-       transcript1+=t.text+' '
-     })
+
+  let transcript2=''
+  let transcript3=''
+  try {
+    const textjson1= await YoutubeTranscript.fetchTranscript(scoredVideos[0].id)
+    textjson1.map(t=>{
+      transcript1+=t.text+' '
+    })
+
+    const textjson2= await YoutubeTranscript.fetchTranscript(scoredVideos[1].id)
+       textjson2.map(t=>{
+         transcript2+=t.text+' '
+       })
+
+ 
+       const textjson3= await YoutubeTranscript.fetchTranscript(scoredVideos[2].id)
+          textjson3.map(t=>{
+            transcript3+=t.text+' '
+          })
+  } catch(e){
+      console.log(e)
+  }        
+
+
+const transcriptions = [transcript1,transcript2,transcript3]
 
 const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else ,without json key just parseble json object , using this template: {keywords: ['keyword1', 'keyword2']}`)
 //console.log(rawtitlelist)
@@ -92,7 +114,7 @@ const titlelist = djson.parse(rawtitlelist.response);
     newdescription,
     email,
     keywordslist,
-    transcript1
+    transcriptions
   };
 
 

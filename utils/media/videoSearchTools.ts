@@ -16,7 +16,8 @@ type VideoDetails = {
   commentCount: number;
   subscriberCount: number;
   score: number;
-  videoUrl?:string;
+  videoUrl:string;
+  id:string;
 }
 
 
@@ -82,7 +83,8 @@ export const videoDetailsTool = async (video: VideoSearchResults): Promise<Video
     commentCount,
     subscriberCount,
     score,
-    videoUrl
+    videoUrl,
+    id:video.id
   };
 }
 
