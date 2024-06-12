@@ -5,7 +5,7 @@
 import { H3Event } from "h3";
 //import ollama from "ollama";
 import type { JSONResponse } from "~~/iam/misc/types";
-import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt} from "~~/utils/media/prompts";
+import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt, contentprompt} from "~~/utils/media/prompts";
 import * as djson from "dirty-json";
 import {  videoSearchTool, videoDetailsTool } from "~~/utils/media/videoSearchTools";
 import { YoutubeTranscript } from 'youtube-transcript';
@@ -75,7 +75,7 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   }        
 
 
-const transcriptions = [transcript1,transcript2,transcript3]
+const transcriptions = [transcript1,transcript2,transcript3].join('\n')
 
 const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else ,without json key just parseble json object , using this template: {keywords: ['keyword1', 'keyword2']}`)
 //console.log(rawtitlelist)
@@ -105,6 +105,10 @@ const titlelist = djson.parse(rawtitlelist.response);
   const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, ,without json key just parseble json object, using this template: \n{'output': 'text of the email'}`)
 
   const email = djson.parse(rawemail.response).output;
+
+  const rawcontent = await airunner(model,contentprompt,`Description: ${newdescription}\Transcript: ${transcriptions.substring(0,1000)}\nOutput as JSON only without anything else, without json key just parseble json object, using this template: \n{'content': 'text of the video'}`)
+
+ // const content = djson.parse(rawcontent.response).content;
   
 
   response.status = "success";
@@ -114,7 +118,8 @@ const titlelist = djson.parse(rawtitlelist.response);
     newdescription,
     email,
     keywordslist,
-    transcriptions
+    transcriptions,
+   rawcontent
   };
 
 
