@@ -22,3 +22,6 @@ Please create an email to send to that list based on the topic and description p
 The content must be 4000 - 5000 words in length. You will be provided with a description to plan the content outline from and an excerpt of similar popular video transcript to borrow the tone and find some inspiration
  At the beginning provide a hook to retain the viewer attention and after this you will generate a slightly funny, direct, engaging text.
  At the end, include something convincing to encourage the viewer to subscribe to the channel .`
+
+ export const summarypropmt = `You must summarize the video as outline with keypoints and subkeypoints and describe the tone of an youtube video provided by the user.
+ Make it at least 1000 words and the response will be in strict json format without anything else, using as template {title:"youtube title goes here",summary:"youtube video summary goes here",tone:"youtube video tone goes here"} `

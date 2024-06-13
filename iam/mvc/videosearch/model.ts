@@ -5,7 +5,7 @@
 import { H3Event } from "h3";
 //import ollama from "ollama";
 import type { JSONResponse } from "~~/iam/misc/types";
-import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt, contentprompt} from "~~/utils/media/prompts";
+import { titleprompt, descriptionprompt, announcementprompt , keywordsprompt, summarypropmt} from "~~/utils/media/prompts";
 import * as djson from "dirty-json";
 import {  videoSearchTool, videoDetailsTool } from "~~/utils/media/videoSearchTools";
 import { YoutubeTranscript } from 'youtube-transcript';
@@ -49,6 +49,7 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   
   scoredVideos = scoredVideos.sort((a, b) => b.score - a.score).slice(0, 15);
 
+
 /*    TRANSCRIPTIONS      */ 
   let transcript1=''
 
@@ -74,8 +75,18 @@ export async function create(event: H3Event): Promise<JSONResponse> {
       console.log(e)
   }        
 
+ let summary=null 
+const rawsummary = await airunner(model,summarypropmt,`Youtube video: https://www.youtube.com/watch?v=${scoredVideos[0].id}`)
+try {
+  summary=djson.parse(rawsummary.response);
+} catch (e) {
+  console.log(e)
+}
+
+console.log(`Youtube video: https://www.youtube.com/watch?v=${scoredVideos[0].id}`)
 
 const transcriptions = [transcript1,transcript2,transcript3].join('\n')
+let keywordslist = null;
 
 const rawkeywordlist = await airunner(model,keywordsprompt,`topic: ${topic}\nDescription: ${details}\n. Output as JSON only without anything else ,without json key just parseble json object , using this template: {keywords: ['keyword1', 'keyword2']}`)
 //console.log(rawtitlelist)
@@ -86,27 +97,47 @@ try {
   console.log(e)
 }
 
-const keywordslist = (keywordlist.keywords.length>0)? keywordlist.keywords.join("\n"):""
+keywordslist = (keywordlist.keywords.length>0)? keywordlist.keywords.join("\n"):""
       
-
+let titlelist=null;
   
 const rawtitlelist = await airunner(model,titleprompt,`topic: ${topic}\nDescription: ${details}\nSuccessful titles:\n${scoredVideos.map(video => video.title).join("\n")}. Output as JSON only without anything else,,without json key just parseble json object, using this template: {titles: ['title1', 'title2']}`)
+try {
+  titlelist = djson.parse(rawtitlelist.response);
+}
+catch (e){
+console.log(e)
+}
 
-const titlelist = djson.parse(rawtitlelist.response);
 
 //console.log(rawtitlelist)
 
   const rawnewdescription = await airunner(model,descriptionprompt,` topic: ${topic}\nDescription: ${details}\n Output as JSON only without anything else, ,without json key just parseble json object, using this template: \n Long tail keywords to be included:${keywordslist}\n{'output': 'description of the video'} `)
-  const newdescription = djson.parse(rawnewdescription.response).output;
+  
+  let newdescription=null
+
+  try{
+    newdescription = djson.parse(rawnewdescription.response).output;
+  }
+  catch(e){
+
+  }
+  
+   
 
   //console.log(rawnewdescription)
 
 
   const rawemail = await airunner(model,announcementprompt,`topic: ${topic}\nDescription: ${newdescription}\nOutput as JSON only without anything else, ,without json key just parseble json object, using this template: \n{'output': 'text of the email'}`)
+let email=null;
+try {
+  email = djson.parse(rawemail.response).output;
+} catch(e){
 
-  const email = djson.parse(rawemail.response).output;
+}
+ //const email = djson.parse(rawemail.response).output;
 
-  const rawcontent = await airunner(model,contentprompt,`Description: ${newdescription}\Transcript: ${transcriptions.substring(0,1000)}\nOutput as JSON only without anything else, without json key just parseble json object, using this template: \n{'content': 'text of the video'}`)
+ // const rawcontent = await airunner(model,contentprompt,`Description: ${newdescription}\Transcript: ${transcriptions.substring(0,1000)}\nOutput as JSON only without anything else, without json key just parseble json object, using this template: \n{'content': 'text of the video'}`)
 
  // const content = djson.parse(rawcontent.response).content;
   
@@ -119,7 +150,8 @@ const titlelist = djson.parse(rawtitlelist.response);
     email,
     keywordslist,
     transcriptions,
-   rawcontent
+    summary
+  // rawcontent
   };
 
 

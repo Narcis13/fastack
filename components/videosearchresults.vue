@@ -30,6 +30,7 @@ console.log('videoresearch',props.researchdata)
             <q-tab name="titles" icon="alarm" label="Titles" />
             <q-tab name="description" icon="movie" label="Description" />
             <q-tab name="transcriptions" icon="movie" label="Transcriptions" />
+            <q-tab name="summary" icon="movie" label="Summary" />
           </q-tabs>
         </template>
   
@@ -70,6 +71,12 @@ console.log('videoresearch',props.researchdata)
              </div>
             </q-tab-panel>
 
+            <q-tab-panel name="summary">
+              <div class="text-h4 q-mb-md">Summary</div>
+              <div class="text-body2">
+               {{ props.researchdata.data.summary }}
+             </div>
+            </q-tab-panel>
 
           </q-tab-panels>
         </template>

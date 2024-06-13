@@ -4,8 +4,9 @@ export default defineNuxtConfig({
   runtimeConfig:{
     openai_key:process.env.openai_key,
     youtube_api_key:process.env.YouTubeAPIKey,
+   
     public:{
-     // placeHost:process.env.NUXT_PLACE_HOST,
+      perplexity_api_key:process.env.perplexity_api_key
     }
     
   },
