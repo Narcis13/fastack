@@ -74,11 +74,11 @@ export const videoDetailsTool = async (video: VideoSearchResults): Promise<Video
   const likeCount = videoData.items[0].statistics.likeCount;
   const commentCount = videoData.items[0].statistics.commentCount;
   const subscriberCount = channelData.items[0].statistics.subscriberCount;
-  const duration = video.duration;
+  const duration = videoData.items[0].contentDetails?.duration.replace(/(^PT|S$)/g, "").split(/[^\d]/).map((item) => item.length < 2 ? "0" + item : item).join(":").replace(/^0/, "")
   const videoString = `   - Title: ${title}\n   - Channel: ${video.channelTitle}\n   - View Count: ${Number(viewCount).toLocaleString()}\n   - Days Since Published: ${video.daysSincePublished}\n   - Likes: ${Number(likeCount).toLocaleString()}\n   - Subscriber Count: ${Number(subscriberCount).toLocaleString('en-US')}\n   - Video URL: https://www.youtube.com/watch?v=${video.id}\n`;
-
+  const duration_filter = (duration.length>5)?0:1;
   // const score = (viewCount / video.daysSincePublished / subscriberCount) + (likeCount * 10) + (commentCount * 100);
-  const score = (((viewCount / subscriberCount) * 0.4) + ((likeCount / viewCount) * 0.3) + ((commentCount / viewCount) * 0.2) * (1/video.daysSincePublished)) ;
+  const score = duration_filter*(((viewCount / subscriberCount) * 0.4) + ((likeCount / viewCount) * 0.3) + ((commentCount / viewCount) * 0.2) * (1/video.daysSincePublished)) ;
 
   return {
     videoString, 

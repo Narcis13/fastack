@@ -17,7 +17,7 @@ console.log('videoresearch',props.researchdata)
     <div>
       <q-splitter
         v-model="splitterModel"
-        style="height: 350px"
+        style="height: 450px"
       >
   
         <template v-slot:before>

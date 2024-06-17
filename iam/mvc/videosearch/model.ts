@@ -19,9 +19,18 @@ export async function index(event: H3Event): Promise<JSONResponse> {
   const response = {} as JSONResponse;  
   //console.log('index doodads',event)
   const info = "get all videos"  
+  const videos = await videoSearchTool('subliminal messages', 50)
+  let scoredVideos = []
+  for (const video of videos) {
+    const videodetails = await videoDetailsTool(video);
+    scoredVideos.push(videodetails);
+  }
+  
+  scoredVideos = scoredVideos.sort((a, b) => b.score - a.score).slice(0, 15);
   response.status = "success";
   response.data = {
     info,
+    scoredVideos
   };
 
   return response;
@@ -76,7 +85,7 @@ export async function create(event: H3Event): Promise<JSONResponse> {
   }        
 
  let summary=null 
-const rawsummary = await airunner(model,summarypropmt,`Youtube video: https://www.youtube.com/watch?v=${scoredVideos[0].id}`)
+const rawsummary = await airunner('llama-3-sonar-large-32k-online',summarypropmt,`Youtube video: https://www.youtube.com/watch?v=${scoredVideos[0].id}`)
 try {
   summary=djson.parse(rawsummary.response);
 } catch (e) {
