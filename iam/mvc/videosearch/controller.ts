@@ -4,7 +4,7 @@
 
 // Definitely much cleaner and neater
 
-import { index, create } from "./model";
+import { index, create, generate } from "./model";
 import { createRouter, defineEventHandler, useBase } from 'h3';
 
 const router = createRouter();
@@ -21,6 +21,8 @@ router.post('/', defineEventHandler(async (event) => {
   return await create(event) 
 }));
 
-
+router.post('/generate', defineEventHandler(async (event) => { 
+  return await generate(event) 
+}));
 
 export default useBase('/api/ai/videosearch', router.handler);

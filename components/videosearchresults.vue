@@ -6,7 +6,7 @@ const props = defineProps({
 })
 
 
-console.log('videoresearch',props.researchdata)
+//console.log('videoresearch',props.researchdata)
 </script>
 
 

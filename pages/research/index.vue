@@ -48,6 +48,8 @@ async function research(){
             </div>
            
             <videosearchresults v-if="researchdata.data" :researchdata="researchdata"/>
+            <videoscriptgenesis v-if="researchdata.data" :researchdata="researchdata"/>
+
         </div>
 
     </q-page>

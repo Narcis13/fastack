@@ -154,7 +154,7 @@ try {
   response.status = "success";
   response.data = {
     scoredVideos,
-    titlelist:`Successful Titles for the topic: ${topic}\n\n${titlelist.titles.map((s: string) => `- ${s}`).join("\n")}\n\n`,
+    titlelist,//:`Successful Titles for the topic: ${topic}\n\n${titlelist.titles.map((s: string) => `- ${s}`).join("\n")}\n\n`,
     newdescription,
     email,
     keywordslist,
@@ -164,6 +164,21 @@ try {
   };
 
 
+
+  return response;
+}
+
+export async function generate(event: H3Event): Promise<JSONResponse> {
+  const response = {} as JSONResponse;  
+  console.log('hemeratinh....',event)
+  const info = "generate script for videos..."  
+
+
+  response.status = "success";
+  response.data = {
+    
+    info
+  };
 
   return response;
 }
