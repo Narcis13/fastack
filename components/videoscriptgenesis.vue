@@ -13,13 +13,263 @@ const tone=ref(props.researchdata.data.summary.tone)
 const audience = ref('young and mid-age, smart and curious eager to grow as a person, slightly more women than men')
 const model=ref('llama-3-sonar-large-32k-online')
 const hookprompt=ref(`
-Hook prompt
+You are an AI language model tasked with generating engaging hooks for YouTube videos. You will receive a title, description, tone, and target audience for a YouTube video. Your job is to create a captivating hook that will grab the viewers' attention and entice them to watch the video. 
+
+Ensure the hook is engaging, relevant to the provided information, and suited to the given tone and audience. 
+
+Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
+{
+  "hook": "<hook content>"
+}
+Example of user prompt:
+Title: "Top 10 Hidden Gems in Europe"
+Description: "Discover the most amazing and lesser-known destinations in Europe that you must visit on your next trip. From quaint villages to stunning landscapes, these hidden gems will surprise and delight you."
+Tone: Informative
+Audience: Travel enthusiasts, adventure seekerss}
+
+Example of an AI Response:
+{
+  "hook": "Ready to uncover Europe's best-kept secrets? Join us as we reveal 10 hidden gems you won't believe exist!"
+}
 `)
 const outlineprompt=ref(`
-Outline prompt
+You are an AI language model tasked with generating detailed outlines for YouTube videos. You will receive a title, description, tone, and target audience for a YouTube video. Your job is to create a comprehensive outline with at least 10-12 key points, each accompanied by 2-3 subtopics that serve as a skeleton for the content. 
+
+Ensure the outline is engaging, relevant to the provided information, and suited to the given tone and audience.
+
+Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
+{
+  "outline": [
+    {
+      "keypoint": "<keypoint>",
+      "subtopics": [
+        "<subtopic1>",
+        "<subtopic2>",
+        ...
+      ]
+    },
+    ...
+  ]
+}
+Example of user prompt:
+Title: "Top 10 Hidden Gems in Europe"
+Description: "Discover the most amazing and lesser-known destinations in Europe that you must visit on your next
+trip. From quaint villages to stunning landscapes, these hidden gems will surprise and delight you."
+Tone: Informative
+Audience: Travel enthusiasts, adventure seekerss
+
+Example of an AI Response:
+{
+  "outline": [
+    {
+      "keypoint": "Introduction to Hidden Gems in Europe",
+      "subtopics": [
+        "Brief overview of the video",
+        "Importance of exploring lesser-known destinations"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #1: Quaint Village in France",
+      "subtopics": [
+        "Description of the village",
+        "Unique attractions",
+        "Best time to visit"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #2: Secret Beach in Greece",
+      "subtopics": [
+        "Location and access",
+        "Activities to do",
+        "Local tips"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #3: Mountain Town in Switzerland",
+      "subtopics": [
+        "Scenic views",
+        "Outdoor activities",
+        "Local cuisine"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #4: Historic City in Spain",
+      "subtopics": [
+        "Historical significance",
+        "Must-see landmarks",
+        "Cultural experiences"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #5: Picturesque Island in Italy",
+      "subtopics": [
+        "Island highlights",
+        "Hidden spots",
+        "Travel tips"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #6: Underrated Town in Portugal",
+      "subtopics": [
+        "Charming architecture",
+        "Local festivals",
+        "Gastronomic delights"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #7: Scenic Route in Norway",
+      "subtopics": [
+        "Route details",
+        "Key viewpoints",
+        "Travel recommendations"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #8: Enchanting Forest in Germany",
+      "subtopics": [
+        "Location and significance",
+        "Flora and fauna",
+        "Best hiking trails"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #9: Coastal Town in Croatia",
+      "subtopics": [
+        "Beach attractions",
+        "Historical sites",
+        "Local experiences"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #10: Remote Village in Scotland",
+      "subtopics": [
+        "Village charm",
+        "Local legends",
+        "Travel tips"
+      ]
+    },
+    {
+      "keypoint": "Conclusion",
+      "subtopics": [
+        "Summary of hidden gems",
+        "Encouragement to explore off the beaten path",
+        "Call to action"
+      ]
+    }
+  ]
+}
+
 `)
 const videoscriptprompt=ref(`
-Script prompt
+You are an AI language model tasked with generating comprehensive content for YouTube videos. You will receive a title, description, tone, target audience, and a detailed outline for a YouTube video. Your job is to create detailed content for each subtopic under each key point in the outline, ensuring the entire content has more than 500 words.
+
+Ensure the content is engaging, relevant to the provided information, and suited to the given tone and audience.
+
+Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
+{
+  "content": [
+    {
+      "keypoint": "<keypoint>",
+      "subtopics": [
+        {
+          "subtopic": "<subtopic title>",
+          "content": "<content related to the subtopic>"
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+
+Example of user prompt:
+Title: "Top 10 Hidden Gems in Europe"
+Description: "Discover the most amazing and lesser-known destinations in Europe that you must visit on your next trip. From quaint villages to stunning landscapes, these hidden gems will surprise and delight you."
+Tone: Informative
+Audience: Travel enthusiasts, adventure seekers
+Outline:
+{
+  "outline": [
+    {
+      "keypoint": "Introduction to Hidden Gems in Europe",
+      "subtopics": [
+        "Brief overview of the video",
+        "Importance of exploring lesser-known destinations"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #1: Quaint Village in France",
+      "subtopics": [
+        "Description of the village",
+        "Unique attractions",
+        "Best time to visit"
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #2: Secret Beach in Greece",
+      "subtopics": [
+        "Location and access",
+        "Activities to do",
+        "Local tips"
+      ]
+    },
+    ...
+  ]
+}
+Example of an AI Response:
+{
+  "content": [
+    {
+      "keypoint": "Introduction to Hidden Gems in Europe",
+      "subtopics": [
+        {
+          "subtopic": "Brief overview of the video",
+          "content": "Welcome to our journey through Europe’s hidden gems. In this video, we'll explore some of the most enchanting and lesser-known destinations across the continent. These spots are perfect for travelers seeking unique experiences away from the usual tourist trails. From charming villages to breathtaking landscapes, we have curated a list of must-visit places that will leave you in awe."
+        },
+        {
+          "subtopic": "Importance of exploring lesser-known destinations",
+          "content": "While popular tourist spots have their charm, exploring lesser-known destinations offers a unique and often more authentic experience. These hidden gems provide a sense of discovery and adventure, allowing travelers to connect with local cultures and traditions in a more intimate setting. Additionally, visiting these places can help support local communities and promote sustainable tourism."
+        }
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #1: Quaint Village in France",
+      "subtopics": [
+        {
+          "subtopic": "Description of the village",
+          "content": "Our first hidden gem is a picturesque village nestled in the French countryside. With its cobblestone streets, historic architecture, and vibrant flower gardens, this village looks like it’s straight out of a fairy tale. The serene atmosphere and friendly locals make it a perfect getaway for those looking to escape the hustle and bustle of city life."
+        },
+        {
+          "subtopic": "Unique attractions",
+          "content": "The village is home to several unique attractions, including an ancient castle, a charming market square, and a beautiful church with stunning stained-glass windows. Visitors can also enjoy local craft shops and cozy cafes that offer delicious French pastries and coffee."
+        },
+        {
+          "subtopic": "Best time to visit",
+          "content": "The best time to visit this village is during the spring and summer months when the weather is pleasant and the gardens are in full bloom. However, autumn also offers a special charm with its colorful foliage, making it an ideal time for photography enthusiasts."
+        }
+      ]
+    },
+    {
+      "keypoint": "Hidden Gem #2: Secret Beach in Greece",
+      "subtopics": [
+        {
+          "subtopic": "Location and access",
+          "content": "Our next hidden gem is a secluded beach located on one of Greece’s less-traveled islands. This pristine beach is surrounded by rugged cliffs and crystal-clear waters, providing a perfect escape for beach lovers. Accessing this beach requires a short hike through a scenic trail, but the effort is well worth it."
+        },
+        {
+          "subtopic": "Activities to do",
+          "content": "Visitors can enjoy a range of activities at this secret beach, including swimming, snorkeling, and sunbathing. The calm waters are ideal for snorkeling, allowing you to explore the vibrant marine life just beneath the surface. For those seeking relaxation, the beach offers plenty of spots to lay out a towel and soak up the sun."
+        },
+        {
+          "subtopic": "Local tips",
+          "content": "To make the most of your visit, consider packing a picnic with local Greek delicacies and enjoying a meal by the sea. Additionally, visiting early in the morning or late in the afternoon can help you avoid the few crowds that may know about this hidden gem. Don’t forget to bring plenty of water and sun protection, as there are limited facilities on-site."
+        }
+      ]
+    },
+    ...
+  ]
+}
+
 `)
 
 async function generate(){
@@ -46,7 +296,7 @@ async function generate(){
       });
       $q.loading.hide()
     
-   //  console.log('Raspuns generate',response) 
+    console.log('Raspuns generate',response) 
 }
 </script>
 

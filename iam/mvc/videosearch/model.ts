@@ -170,14 +170,46 @@ try {
 
 export async function generate(event: H3Event): Promise<JSONResponse> {
   const response = {} as JSONResponse;  
-  console.log('hemeratinh....',event)
-  const info = "generate script for videos..."  
+  //console.log('hemeratinh....',event)
+ // const info = "generate script for videos..."  
+  const body = await readBody(event);
+  const { model, title, description, audience, tone, hookprompt,outlineprompt,videoscriptprompt } = body
 
+  let hook=null;
+  
+const rawhook= await airunner(model,hookprompt,`Title: ${title}\nDescription: ${description}\nTone:${tone}\nAudience:\n${audience}. `)
+try {
+  hook = djson.parse(rawhook.response);
+}
+catch (e){
+console.log(e)
+}
 
+let outline=null;
+  
+const rawoutline= await airunner(model,outlineprompt,`Title: ${title}\nDescription: ${description}\nTone:${tone}nAudience:${audience}. `)
+try {
+  outline = djson.parse(rawoutline.response);
+}
+catch (e){
+console.log(e)
+}
+
+let content=null;
+  
+const rawcontent= await airunner(model,videoscriptprompt,`Title: ${title}\nDescription: ${description}\nTone:${tone}\nAudience:${audience}\nOutline:${JSON.stringify(outline.outline)}. `)
+try {
+  content = djson.parse(rawcontent.response);
+}
+catch (e){
+console.log(e)
+}
   response.status = "success";
   response.data = {
-    
-    info
+    hook:hook.hook,
+    outline:outline.outline,
+    content:content.content
+   
   };
 
   return response;
