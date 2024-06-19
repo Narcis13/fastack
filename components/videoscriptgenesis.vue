@@ -12,35 +12,57 @@ const description=ref(props.researchdata.data.newdescription)
 const tone=ref(props.researchdata.data.summary.tone)
 const audience = ref('young and mid-age, smart and curious eager to grow as a person, slightly more women than men')
 const model=ref('llama-3-sonar-large-32k-online')
+/** 
+ * 
+# IDENTITY and PURPOSE
 
+You are an expert at creating TED-quality keynote presentations from the input provided.
+
+Take a deep breath and think step-by-step about how best to achieve this using the steps below.
+
+# STEPS
+
+- Think about the entire narrative flow of the presentation first. Have that firmly in your mind. Then begin.
+
+- Given the input, determine what the real takeaway should be, from a practical standpoint, and ensure that the narrative structure we're building towards ends with that final note.
+
+- Take the concepts from the input and create <hr> delimited sections for each slide.
+
+- The slide's content will be 3-5 bullets of no more than 5-10 words each.
+
+- Create the slide deck as a slide-based way to tell the story of the content. Be aware of the narrative flow of the slides, and be sure you're building the story like you would for a TED talk.
+
+- Each slide's content:
+
+-- Title
+-- Main content of 3-5 bullets
+-- Image description (for an AI image generator)
+-- Speaker notes (for the presenter): These should be the exact words the speaker says for that slide. Give them as a set of bullets of no more than 15 words each.
+
+- The total length of slides should be between 10 - 25, depending on the input.
+
+# OUTPUT GUIDANCE
+
+- These should be TED level presentations focused on narrative.
+
+- Ensure the slides and overall presentation flows properly. If it doesn't produce a clean narrative, start over.
+
+# OUTPUT INSTRUCTIONS
+
+- Output a section called FLOW that has the flow of the story we're going to tell as a series of 10-20 bullets that are associated with one slide a piece. Each bullet should be 10-words max.
+
+- Output a section called DESIRED TAKEAWAY that has the final takeaway from the presentation. This should be a single sentence.
+
+- Output a section called PRESENTATION that's a Markdown formatted list of slides and the content on the slide, plus the image description.
+
+- Ensure the speaker notes are in the voice of the speaker, i.e. they're what they're actually going to say.
+
+# INPUT:
+
+INPUT:
+*/
 const hookprompt=ref(`
-You are an AI language model tasked with generating engaging hooks for YouTube videos. You will receive a title, description, tone, and target audience for a YouTube video. Your job is to create a captivating hook that will grab the viewers' attention and entice them to watch the video using these frameworks. 
-
-There are 2 main goals you're looking to achieve when writing a hook:
-Get the reader to stop scrolling
-Get the reader to click to read more 5 elements of writing an effective headline:
-Be CLEAR not Clever
-Specify the WHO
-Specify the WHAT
-Specify the WHY
-Twist The Knife
-
-6 proven ways to write an engaging first sentence:
-Open with 1 strong declarative sentence.
-Open with a thought-provoking question.
-Open with a controversial opinion.
-Open with a moment in time.
-Open with a vulnerable statement.
-Open with a weird unique insight.
-
-Viral Tweet Thread Example #1
-Principles this thread uses & why they worked:
-Strong deciarative sentence + controversial opinion opener.
-"I you use it right, Twitter is the most powerful platform in the world." This sentence makes a bold claim that is somewhat controversial. Most readers will disagree with that first sentence, which will cause them to keep reading.
-Twist the knife. "But Twitter does a horrible job showing you Its advanced features. you probably know nothing about." This sentence tells the reeder: "you're missing out on some awesome stuffi But it's not your fault, and i'm here to help."
-
-The first sentence hooked them and the second sentence got them wanting more of what feels like "insider info." Clear, not clever. "Here are 10 of them you probably know nothing about." As clear as it gets - I am making a promise to the reader that what follows are 10 features they don't know about (scratching the itch and solving the problem I laid out in the 2nd sentence):
-This is a classic "insider info secrets" listicle you can use time and time again. Tell the reader you have some insider Into (and how the world has conspired against them to keep them from knowing about it). Then ease their pain by giving them the insider info in a concise listicle format.
+You are an AI language model tasked with generating engaging hooks for YouTube videos. You will receive a title, description, tone, and target audience for a YouTube video. Your job is to create a captivating hook that will grab the viewers' attention and entice them to watch the video . 
 
 
 Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
@@ -188,25 +210,13 @@ Example of an AI Response:
 `)
 const videoscriptprompt=ref(`
 You are an AI language model tasked with generating comprehensive content for YouTube videos. You will receive a title, description, tone, target audience, and a detailed outline for a YouTube video.
-Your job is to create detailed content for each subtopic under each key point in the outline, ensuring that each subtopic content  has more than 200 words.
+Your job is to create detailed content following the outline provided , ensuring that the script will have 2500 - 3000 words.
 
-Ensure the content is engaging, relevant to the provided information, and suited to the given tone and audience.
+Ensure the content is engaging, relevant to the provided information, and suited to the given tone and audience. Keep in mind that the video will use stoxk footage and ai generated voiceover.
 
 Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
 {
-  "content": [
-    {
-      "keypoint": "<keypoint>",
-      "subtopics": [
-        {
-          "subtopic": "<subtopic title>",
-          "content": "<content related to the subtopic>"
-        },
-        ...
-      ]
-    },
-    ...
-  ]
+  "content": "<full well structured content>"
 }
 
 Example of user prompt:
@@ -245,56 +255,8 @@ Outline:
 }
 Example of an AI Response:
 {
-  "content": [
-    {
-      "keypoint": "Introduction to Hidden Gems in Europe",
-      "subtopics": [
-        {
-          "subtopic": "Brief overview of the video",
-          "content": "Welcome to our journey through Europe’s hidden gems. In this video, we'll explore some of the most enchanting and lesser-known destinations across the continent. These spots are perfect for travelers seeking unique experiences away from the usual tourist trails. From charming villages to breathtaking landscapes, we have curated a list of must-visit places that will leave you in awe."
-        },
-        {
-          "subtopic": "Importance of exploring lesser-known destinations",
-          "content": "While popular tourist spots have their charm, exploring lesser-known destinations offers a unique and often more authentic experience. These hidden gems provide a sense of discovery and adventure, allowing travelers to connect with local cultures and traditions in a more intimate setting. Additionally, visiting these places can help support local communities and promote sustainable tourism."
-        }
-      ]
-    },
-    {
-      "keypoint": "Hidden Gem #1: Quaint Village in France",
-      "subtopics": [
-        {
-          "subtopic": "Description of the village",
-          "content": "Our first hidden gem is a picturesque village nestled in the French countryside. With its cobblestone streets, historic architecture, and vibrant flower gardens, this village looks like it’s straight out of a fairy tale. The serene atmosphere and friendly locals make it a perfect getaway for those looking to escape the hustle and bustle of city life."
-        },
-        {
-          "subtopic": "Unique attractions",
-          "content": "The village is home to several unique attractions, including an ancient castle, a charming market square, and a beautiful church with stunning stained-glass windows. Visitors can also enjoy local craft shops and cozy cafes that offer delicious French pastries and coffee."
-        },
-        {
-          "subtopic": "Best time to visit",
-          "content": "The best time to visit this village is during the spring and summer months when the weather is pleasant and the gardens are in full bloom. However, autumn also offers a special charm with its colorful foliage, making it an ideal time for photography enthusiasts."
-        }
-      ]
-    },
-    {
-      "keypoint": "Hidden Gem #2: Secret Beach in Greece",
-      "subtopics": [
-        {
-          "subtopic": "Location and access",
-          "content": "Our next hidden gem is a secluded beach located on one of Greece’s less-traveled islands. This pristine beach is surrounded by rugged cliffs and crystal-clear waters, providing a perfect escape for beach lovers. Accessing this beach requires a short hike through a scenic trail, but the effort is well worth it."
-        },
-        {
-          "subtopic": "Activities to do",
-          "content": "Visitors can enjoy a range of activities at this secret beach, including swimming, snorkeling, and sunbathing. The calm waters are ideal for snorkeling, allowing you to explore the vibrant marine life just beneath the surface. For those seeking relaxation, the beach offers plenty of spots to lay out a towel and soak up the sun."
-        },
-        {
-          "subtopic": "Local tips",
-          "content": "To make the most of your visit, consider packing a picnic with local Greek delicacies and enjoying a meal by the sea. Additionally, visiting early in the morning or late in the afternoon can help you avoid the few crowds that may know about this hidden gem. Don’t forget to bring plenty of water and sun protection, as there are limited facilities on-site."
-        }
-      ]
-    },
-    ...
-  ]
+  "content": "Welcome to our journey through Europe’s hidden gems. In this video, we'll explore some of the most enchanting and lesser-known destinations across the continent. These spots are perfect for travelers seeking unique experiences away from the usual tourist trails. From charming villages to breathtaking landscapes, we have curated a list of must-visit places that will leave you in awe..."
+  
 }
 
 `)
