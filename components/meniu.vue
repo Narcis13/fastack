@@ -16,7 +16,8 @@ const   linksfe= [
 
 const  links1= [
 
-    { icon: 'subscriptions', text: 'Research videos',ruta:'/research' }
+    { icon: 'subscriptions', text: 'Research videos',ruta:'/research' },
+    { icon: 'watch_later', text: 'Generate videos',ruta:'/generate' }
   ]
 const   links2= [
     { icon: 'folder', text: 'Library' },
