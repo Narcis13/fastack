@@ -1,12 +1,14 @@
 <script setup>
 import { useQuasar } from 'quasar'
+import {useGeneratedVideoStore} from '~/stores/generatedVideoStore'
 const $q = useQuasar()
-
+const generatedVideoStore = useGeneratedVideoStore()
 let  researchdata =reactive({
     data:null
 })
+const tab=ref('titles')
 const model=ref("llama3")
-const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
+//const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
 const description=ref("You are going to create extremely good and captivating video about ")
 const topic = ref()
 
@@ -44,11 +46,52 @@ async function start(){
             </div>
             <!-- <q-input class="q-mt-sm" outlined v-model="topic" label="Topic" /> -->
             <q-input class="q-mt-sm" outlined v-model="description" type="textarea" label="Description" />
-            <q-select :options="models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
+            <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
             <div class="flex flex-center">
                 <q-btn class="q-mb-md" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="start" label="Start" style="max-width: 200px;"/>
             </div>
            
+            <div class="q-pa-md">
+                <div class="q-gutter-y-md" style="max-width: 600px">
+                    <q-card>
+                        <q-tabs
+                            v-model="tab"
+                            dense
+                            class="text-grey"
+                            active-color="primary"
+                            indicator-color="primary"
+                            align="justify"
+                            narrow-indicator
+                            >
+                        <q-tab name="titles" label="Title&Hook" />
+                        <q-tab name="keywords" label="Keywords" />
+                        <q-tab name="slides" label="Slides" />
+                        </q-tabs>
+
+                        <q-separator />
+
+                        <q-tab-panels v-model="tab" animated>
+                        <q-tab-panel name="titles">
+                            
+                          <generate-titles />
+
+                        </q-tab-panel>
+
+                        <q-tab-panel name="keywords">
+                            <div class="text-h6">Alarms</div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </q-tab-panel>
+
+                        <q-tab-panel name="slides">
+                            <div class="text-h6">Movies</div>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </q-tab-panel>
+                        </q-tab-panels>
+                    </q-card>
+
+                   
+                    </div>
+                </div>
             <!-- <videosearchresults v-if="researchdata.data" :researchdata="researchdata"/>
             <videoscriptgenesis v-if="researchdata.data" :researchdata="researchdata"/> -->
 
