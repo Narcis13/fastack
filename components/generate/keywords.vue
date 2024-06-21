@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import {hooktitleprompt} from "~~/utils/media/genesisprompts"
+import {keywordsprompt} from "~~/utils/media/prompts"
 import {useGeneratedVideoStore} from '~/stores/generatedVideoStore'
 
 const props = defineProps({
@@ -11,26 +11,26 @@ const props = defineProps({
 const $q = useQuasar()
 const model=ref("llama3")
 const generatedVideoStore = useGeneratedVideoStore()
-const userprompt=ref("Give me 5 examples of hooks and titles using the framework provided and respecting strictly json output format for topic: "+generatedVideoStore.description)
+const userprompt=ref("Topic: "+generatedVideoStore.description)
 const output=ref({})
 async function generate(){
     console.log(userprompt.value)
     $q.loading.show({
       delay: 400 // ms
        })
-    const response = await generatedVideoStore.runAgent('hooksandtitles',model.value,hooktitleprompt,userprompt.value)
+    const response = await generatedVideoStore.runAgent('keywords',model.value,keywordsprompt,userprompt.value)
  
        $q.loading.hide()
 
        console.log('Raspuns',response)
-       output.value=response.data.generated.hooksandtitles
+       output.value=response.data.generated.keywords
 }
 
 </script>
 
 <template>
     <div class="column">
-        <div class="text-h6">Title & Hook</div>
+        <div class="text-h6">Keywords</div>
         
         <div class="flex flex-center q-gutter-x-md  " >
             <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md q-ml-xl" outlined v-model="model" label="AI Model" style="min-width: 300px;"/>
@@ -49,7 +49,7 @@ async function generate(){
                 >
                     <q-card>
                     <q-card-section>
-                        {{ hooktitleprompt }}
+                        {{ keywordsprompt }}
                     </q-card-section>
                     </q-card>
                 </q-expansion-item>

@@ -14,9 +14,13 @@ Please create an email to send to that list based on the topic and description p
   Also encourage the reader to sign up for my patreon if they want to support me further. 
   The email should be signed off from me, Narcissus.`
 
-  export const keywordsprompt = `You will be given a topic and a description for an Youtube video. 
+  export const keywordsprompt = `You will be given a topic for an Youtube video. 
   Come up with 3 long tail popular keywords for ranking higher this video in search algorithm.
-  Take in consideration virality potential.`
+  Take in consideration virality potential.
+  Respond strictly with a structured, parseable JSON response without any additional text or explanations. The structure of your response should be as follows:
+{
+  "keywords": [keyword1, keyword2,...]
+}`
 
   export const contentprompt = `Create complete content  for a video based on the information provided by the user.
 The content must be 4000 - 5000 words in length. You will be provided with a description to plan the content outline from and an excerpt of similar popular video transcript to borrow the tone and find some inspiration

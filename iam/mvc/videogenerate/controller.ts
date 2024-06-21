@@ -13,7 +13,7 @@ router.post('/', defineEventHandler(async (event) => {
   return await create(event) 
 }));
 */
-router.post('/hooksandtitles', defineEventHandler(async (event) => { 
+router.post('/:agent', defineEventHandler(async (event) => { 
   return await hooksandtitles(event) 
 }));
 

@@ -3,7 +3,10 @@ import {defineStore} from 'pinia'
 export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
 
   const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
-
+  const description = ref("")
+  const elements = reactive({
+    hooksandtitles:{}
+  })
   async function runAgent(agent, model,systemprompt, userprompt){
     console.log('starting:',agent)
 
@@ -15,9 +18,10 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
         
        },
         body: {
-   //       model:model.value,
-   //       topic:topic.value,  
-   //       description:description.value  
+         model,
+         systemprompt,
+         userprompt
+
     },
      });
    return response;
@@ -25,7 +29,9 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
 
   return {
     models,
-    runAgent
+    runAgent,
+    elements,
+    description
   }
 
 })

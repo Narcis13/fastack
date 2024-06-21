@@ -9,7 +9,7 @@ let  researchdata =reactive({
 const tab=ref('titles')
 const model=ref("llama3")
 //const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
-const description=ref("You are going to create extremely good and captivating video about ")
+//const description=ref("You are going to create extremely good and captivating video about ")
 const topic = ref()
 
 async function start(){
@@ -45,7 +45,7 @@ async function start(){
                 Video genesis
             </div>
             <!-- <q-input class="q-mt-sm" outlined v-model="topic" label="Topic" /> -->
-            <q-input class="q-mt-sm" outlined v-model="description" type="textarea" label="Description" />
+            <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.description" type="textarea" label="Description" />
             <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
             <div class="flex flex-center">
                 <q-btn class="q-mb-md" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="start" label="Start" style="max-width: 200px;"/>
@@ -78,8 +78,7 @@ async function start(){
                         </q-tab-panel>
 
                         <q-tab-panel name="keywords">
-                            <div class="text-h6">Alarms</div>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            <generate-keywords />
                         </q-tab-panel>
 
                         <q-tab-panel name="slides">
