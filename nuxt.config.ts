@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   runtimeConfig:{
     openai_key:process.env.openai_key,
     youtube_api_key:process.env.YouTubeAPIKey,
-   
+    anthropic_key:process.env.anthropic_key,
     public:{
       perplexity_api_key:process.env.perplexity_api_key
     }

@@ -1,18 +1,26 @@
-import OpenAI from "openai"
+import Anthropic from '@anthropic-ai/sdk';
 
 
 //env("openai_key")
 const config = useRuntimeConfig();
-const openai = new OpenAI({
-  apiKey: config.openai_key,
-})
+
+
+const anthropic = new Anthropic({
+  apiKey: config.anthropic_key // defaults to process.env["ANTHROPIC_API_KEY"]
+});
+
+//.response.content[0].text
+
 
 export default defineEventHandler(async (event) =>{
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "You are a very talented marketer. Come up please with 10 popular long tail kewords for the topic specified by user" },{role:"user", content:"Topic:subconscious mind. I expect output in JSON format with template {keywords:[keyword1,keyword2,...]}"}],
-    model: "gpt-4o",
+  const msg = await anthropic.messages.create({
+    model: "claude-3-5-sonnet-20240620",
+    temperature: 0,
+    system: "You are an AI model , best in class for generating youtube video script for a topic. You are slightly sarcastic, funny , direct and produce content that is intriguing, making viewers addicted to your content ",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Topic: 5 little known facts about subconscious mind" }],
   });
 
-    return {response:completion.choices[0].message.content}
+    return {response:msg.content[0].text}
 
   })

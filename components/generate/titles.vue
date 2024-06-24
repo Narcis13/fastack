@@ -23,6 +23,7 @@ async function generate(){
        $q.loading.hide()
 
        console.log('Raspuns',response)
+       generatedVideoStore.elements['hooksandtitles']=response.data.generated.hooksandtitles
        output.value=response.data.generated.hooksandtitles
 }
 

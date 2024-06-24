@@ -1,12 +1,14 @@
 import ollama from "ollama";
 import OpenAI from "openai";
-
+import Anthropic from '@anthropic-ai/sdk';
 
 const config = useRuntimeConfig();
 const openai = new OpenAI({
   apiKey: config.openai_key,
 })
-
+const anthropic = new Anthropic({
+    apiKey: config.anthropic_key // defaults to process.env["ANTHROPIC_API_KEY"]
+  });
 
 export default async function airunner(model:string,systemprompt:string,userprompt:string){
     let response: {
@@ -15,6 +17,17 @@ export default async function airunner(model:string,systemprompt:string,userprom
         response: null // or provide an appropriate initial value
     };
 
+ if(model=='claude-3-5-sonnet-20240620'){
+    const msg = await anthropic.messages.create({
+        model: model,
+        temperature: 0,
+        system: systemprompt,
+        max_tokens: 4096,
+        messages: [{ role: "user", content: userprompt }],
+      });
+      response.response=msg.content[0].type=='text'?msg.content[0].text:'{}'
+ } 
+    
  if(model=='llama-3-sonar-large-32k-online'||model=='llama-3-sonar-small-32k-online'){
 
     let p :any =  await $fetch("https://api.perplexity.ai/chat/completions", {

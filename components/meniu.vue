@@ -6,10 +6,9 @@ function executa(link){
 }
 
 const   linksfe= [
-    { icon: 'folder', text: 'Facturi fiscale',ruta:'/contabil/femise/fiscala' },
-    { icon: 'restore', text: 'Facturi proforma',ruta:'/contabil/femise/proforma'  },
-    { icon: 'watch_later', text: 'Avize',ruta:'/contabil/femise/avize' },
-    { icon: 'thumb_up_alt', text: 'Facturi recurente',ruta:'/contabil/femise/recurente'  }
+    { icon: 'folder', text: 'Knowledge',ruta:'/contabil/femise/fiscala' },
+    { icon: 'restore', text: 'Chat..',ruta:'/contabil/femise/proforma'  },
+
   ] 
 
 
@@ -69,7 +68,7 @@ const   buttons2= [
   
             <q-separator class="q-my-md" />
   
-            <q-expansion-item group="somegroup" icon="edit_calendar" label="Facturi emise" header-class="text-weight-bold text-uppercase">
+            <q-expansion-item group="somegroup" icon="edit_calendar" label="RAG" header-class="text-weight-bold text-uppercase">
             <q-card>
               <q-card-section>
 

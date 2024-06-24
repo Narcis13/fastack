@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import {keywordsprompt} from "~~/utils/media/prompts"
+import {narrativeprompt} from "~~/utils/media/genesisprompts"
 import {useGeneratedVideoStore} from '~/stores/generatedVideoStore'
 
 const props = defineProps({
@@ -11,20 +11,21 @@ const props = defineProps({
 const $q = useQuasar()
 const model=ref("llama3")
 const generatedVideoStore = useGeneratedVideoStore()
-const userprompt=ref("TOPIC: "+generatedVideoStore.description)
+console.log('narrative setup...',generatedVideoStore.elements)
+const userprompt=ref(`TONE:${generatedVideoStore.tone}. AUDIENCE:${generatedVideoStore.audience}. PRESENTATION_JSON:${JSON.stringify(generatedVideoStore.elements.slides)}`)
 const output=ref({})
 async function generate(){
-    console.log(userprompt.value)
+   
     $q.loading.show({
       delay: 400 // ms
        })
-    const response = await generatedVideoStore.runAgent('keywords',model.value,keywordsprompt,userprompt.value)
+    const response = await generatedVideoStore.runAgent('narrative',model.value,narrativeprompt,userprompt.value)
  
        $q.loading.hide()
 
        console.log('Raspuns',response)
-       generatedVideoStore.elements['keywords']=response.data.generated.keywords
-       output.value=response.data.generated.keywords
+       generatedVideoStore.elements['narrative']=response.data.generated.narrative
+       output.value=response.data.generated.narrative
 }
 
 </script>
@@ -50,7 +51,7 @@ async function generate(){
                 >
                     <q-card>
                     <q-card-section>
-                        {{ keywordsprompt }}
+                        {{ narrativeprompt }}
                     </q-card-section>
                     </q-card>
                 </q-expansion-item>

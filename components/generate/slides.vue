@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import {keywordsprompt} from "~~/utils/media/prompts"
+import {slidesprompt} from "~~/utils/media/genesisprompts"
 import {useGeneratedVideoStore} from '~/stores/generatedVideoStore'
 
 const props = defineProps({
@@ -11,27 +11,27 @@ const props = defineProps({
 const $q = useQuasar()
 const model=ref("llama3")
 const generatedVideoStore = useGeneratedVideoStore()
-const userprompt=ref("TOPIC: "+generatedVideoStore.description)
+const userprompt=ref("Following strictly this framework, compose for me the slides of a presentation for the topic:"+generatedVideoStore.description)
 const output=ref({})
 async function generate(){
     console.log(userprompt.value)
     $q.loading.show({
       delay: 400 // ms
        })
-    const response = await generatedVideoStore.runAgent('keywords',model.value,keywordsprompt,userprompt.value)
+    const response = await generatedVideoStore.runAgent('slides',model.value,slidesprompt,userprompt.value)
  
        $q.loading.hide()
 
        console.log('Raspuns',response)
-       generatedVideoStore.elements['keywords']=response.data.generated.keywords
-       output.value=response.data.generated.keywords
+       generatedVideoStore.elements['slides']=response.data.generated
+       output.value=response.data.generated
 }
 
 </script>
 
 <template>
     <div class="column">
-        <div class="text-h6">Keywords</div>
+        <div class="text-h6">Slides</div>
         
         <div class="flex flex-center q-gutter-x-md  " >
             <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md q-ml-xl" outlined v-model="model" label="AI Model" style="min-width: 300px;"/>
@@ -50,7 +50,7 @@ async function generate(){
                 >
                     <q-card>
                     <q-card-section>
-                        {{ keywordsprompt }}
+                        {{ slidesprompt }}
                     </q-card-section>
                     </q-card>
                 </q-expansion-item>

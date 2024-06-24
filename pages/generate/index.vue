@@ -46,10 +46,12 @@ async function start(){
             </div>
             <!-- <q-input class="q-mt-sm" outlined v-model="topic" label="Topic" /> -->
             <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.description" type="textarea" label="Description" />
-            <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
+            <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.audience"  label="Audience" />
+            <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.tone"  label="Tone" />
+            <!-- <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
             <div class="flex flex-center">
                 <q-btn class="q-mb-md" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="start" label="Start" style="max-width: 200px;"/>
-            </div>
+            </div> -->
            
             <div class="q-pa-md">
                 <div class="q-gutter-y-md" style="max-width: 600px">
@@ -66,6 +68,7 @@ async function start(){
                         <q-tab name="titles" label="Title&Hook" />
                         <q-tab name="keywords" label="Keywords" />
                         <q-tab name="slides" label="Slides" />
+                        <q-tab name="narrative" label="Narrative" />
                         </q-tabs>
 
                         <q-separator />
@@ -82,9 +85,13 @@ async function start(){
                         </q-tab-panel>
 
                         <q-tab-panel name="slides">
-                            <div class="text-h6">Movies</div>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                          <generate-slides />
                         </q-tab-panel>
+
+                        <q-tab-panel name="narrative">
+                          <generate_narrative />
+                        </q-tab-panel>
+
                         </q-tab-panels>
                     </q-card>
 

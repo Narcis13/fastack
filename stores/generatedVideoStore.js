@@ -2,10 +2,16 @@ import {defineStore} from 'pinia'
 
 export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
 
-  const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
+  const models=["llama3","zephyr","gpt-4o",'claude-3-5-sonnet-20240620','gpt-3.5-turbo','llama-3-sonar-large-32k-online']
   const description = ref("")
+  const audience = ref("Average normal people, mostly women, non academic")
+  const tone = ref("Intriguing, slightly sarcastic, slightly humorous, direct and captivating")
+
   const elements = reactive({
-    hooksandtitles:{}
+    hooksandtitles:{},
+    keywords:{},
+    slides:{},
+    narrative:{}
   })
   async function runAgent(agent, model,systemprompt, userprompt){
     console.log('starting:',agent)
@@ -24,6 +30,7 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
 
     },
      });
+   
    return response;
 }
 
@@ -31,7 +38,9 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
     models,
     runAgent,
     elements,
-    description
+    description,
+    tone,
+    audience
   }
 
 })
