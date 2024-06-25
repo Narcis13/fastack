@@ -156,3 +156,46 @@ Follow these steps to generate the speaker notes:
 
 Remember to generate a minimum of 7 sentences per slide and maintain continuity in the style of text from slide to slide. Your output should be a valid JSON object without any additional text or explanations outside of the JSON structure.
 `
+
+export const imagegenerationprompt = `
+You will be given a JSON object representing a presentation with speaker notes for each slide. Your task is to generate detailed AI image prompts for each slide based on the narration. Here's how to proceed:
+
+1. First, you will receive the presentation data in this format:
+
+PRESENTATION_JSON
+
+
+2. Parse the JSON input to extract the slide titles and corresponding speaker notes.
+
+3. For each slide, generate a detailed image prompt based on the speaker notes. The image prompt should:
+   - Be relevant to the narration for that specific slide
+   - Provide background details
+   - Include foreground details
+   - Be descriptive enough for AI image generation
+
+4. Create your output as a JSON object with the following structure:
+   {
+     "imageprompts": [
+       {
+         "slide_title": "Actual slide title from the presentation",
+         "image_prompt": "Generated image prompt for this slide"
+       },
+       ...
+     ]
+   }
+
+5. When generating the image prompts, consider the following:
+   - Visualize the key concepts mentioned in the speaker notes
+   - Include relevant objects, characters, or scenes
+   - Specify colors, lighting, and atmosphere where appropriate
+   - Mention any important visual metaphors or symbols that could enhance the slide's message
+
+6. Ensure that each image prompt is unique and tailored to its specific slide content.
+
+7. Maintain a consistent level of detail across all image prompts.
+
+8. Do not include any explanations or additional text outside of the required JSON structure.
+
+Please provide your output in the exact JSON format specified, with no additional text or explanations.
+
+`
