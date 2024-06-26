@@ -47,14 +47,14 @@ async function start(){
             <!-- <q-input class="q-mt-sm" outlined v-model="topic" label="Topic" /> -->
             <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.description" type="textarea" label="Description" />
             <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.audience"  label="Audience" />
-            <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.tone"  label="Tone" />
+            <q-input class="q-mt-sm q-mb-xl" outlined v-model="generatedVideoStore.tone"  label="Tone" />
             <!-- <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
             <div class="flex flex-center">
                 <q-btn class="q-mb-md" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="start" label="Start" style="max-width: 200px;"/>
             </div> -->
            
-            <div class="q-pa-md">
-                <div class="q-gutter-y-md" style="max-width: 600px">
+            <div >
+                <div class="q-gutter-y-md" style="max-width: 980px">
                     <q-card>
                         <q-tabs
                             v-model="tab"
@@ -69,6 +69,8 @@ async function start(){
                         <q-tab name="keywords" label="Keywords" />
                         <q-tab name="slides" label="Slides" />
                         <q-tab name="narrative" label="Narrative" />
+                        <q-tab name="imageprompts" label="Image Prompts" />
+                        <q-tab name="description" label="Video description" />
                         </q-tabs>
 
                         <q-separator />
@@ -92,6 +94,14 @@ async function start(){
                           <generate_narrative />
                         </q-tab-panel>
 
+                        <q-tab-panel name="imageprompts">
+                          <generate-imageprompts />
+                        </q-tab-panel>
+                        <q-tab-panel name="description">
+                          <div>
+                              <generate-description />
+                          </div>
+                        </q-tab-panel>
                         </q-tab-panels>
                     </q-card>
 

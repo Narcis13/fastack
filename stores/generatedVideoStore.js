@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 
+
 export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
 
   const models=["llama3","zephyr","gpt-4o",'claude-3-5-sonnet-20240620','gpt-3.5-turbo','llama-3-sonar-large-32k-online']
@@ -11,7 +12,8 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
     hooksandtitles:{},
     keywords:{},
     slides:{},
-    narrative:{}
+    narrative:{},
+    imageprompts:{}
   })
   async function runAgent(agent, model,systemprompt, userprompt){
     console.log('starting:',agent)

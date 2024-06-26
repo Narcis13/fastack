@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import {enhancedslidesprompt} from "~~/utils/media/genesisprompts"
+import {imagegenerationprompt} from "~~/utils/media/genesisprompts"
 import {useGeneratedVideoStore} from '~/stores/generatedVideoStore'
 
 const props = defineProps({
@@ -11,27 +11,28 @@ const props = defineProps({
 const $q = useQuasar()
 const model=ref("llama3")
 const generatedVideoStore = useGeneratedVideoStore()
-const userprompt=ref("Following strictly this framework, compose for me the slides of a presentation for the topic:"+generatedVideoStore.description)
+console.log('image prompts setup...')
+const userprompt=ref(`SLIDES SPEAKER NOTES:${JSON.stringify(generatedVideoStore.elements.narrative)}`)
 const output=ref({})
 async function generate(){
-    console.log(userprompt.value)
+   
     $q.loading.show({
       delay: 400 // ms
        })
-    const response = await generatedVideoStore.runAgent('slides',model.value,enhancedslidesprompt,userprompt.value)
+    const response = await generatedVideoStore.runAgent('imageprompts',model.value,imagegenerationprompt,userprompt.value)
  
        $q.loading.hide()
 
        console.log('Raspuns',response)
-       generatedVideoStore.elements['slides']=response.data.generated
-       output.value=response.data.generated
+       generatedVideoStore.elements['imageprompts']=response.data.generated.imageprompts
+       output.value=response.data.generated.imageprompts
 }
 
 </script>
 
 <template>
     <div class="column">
-        <div class="text-h6">Slides</div>
+        <div class="text-h6">Keywords</div>
         
         <div class="flex flex-center q-gutter-x-md  " >
             <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md q-ml-xl" outlined v-model="model" label="AI Model" style="min-width: 300px;"/>
@@ -50,7 +51,7 @@ async function generate(){
                 >
                     <q-card>
                     <q-card-section>
-                        {{ enhancedslidesprompt }}
+                        {{ imagegenerationprompt }}
                     </q-card-section>
                     </q-card>
                 </q-expansion-item>

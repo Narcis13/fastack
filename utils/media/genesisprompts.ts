@@ -162,8 +162,16 @@ You will be given a JSON object representing a presentation with speaker notes f
 
 1. First, you will receive the presentation data in this format:
 
-PRESENTATION_JSON
-
+SLIDES SPEAKER NOTES:
+{
+  "narrative": [
+    {
+      "slide_title": "Actual slide title from the presentation",
+      "speaker_notes": "Generated speaker notes for this slide"
+    },
+    ...
+  ]
+}
 
 2. Parse the JSON input to extract the slide titles and corresponding speaker notes.
 
@@ -197,5 +205,124 @@ PRESENTATION_JSON
 8. Do not include any explanations or additional text outside of the required JSON structure.
 
 Please provide your output in the exact JSON format specified, with no additional text or explanations.
+
+`
+export const descriptionprompt = `
+You are tasked with creating a high-ranking YouTube video description that will help the video perform well in searches. This description should be compelling, informative, and optimized for YouTube's algorithm. Follow these instructions carefully to create the best possible description.
+
+You will be provided with three key inputs:
+
+1. KEYWORDS:
+   This is an array of keywords that must be incorporated into the description.
+
+2. TONE:
+   This specifies the tone to be used throughout the description.
+
+3. PRESENTATION_JSON
+{
+  "FLOW": ["<flow bullet 1>","<flow bullet 2>",...],
+  "DESIRED_TAKEAWAY":"<Text of the desired takeway of presentation...>",
+  PRESENTATION:[
+     {
+       slide_title:"<Title of each slide>",
+       slide_content:["<bullet 1 of content of this slide>","<bullet 2 of content of this slide>",...]
+      },
+      ...
+  ]
+}
+
+Instructions for crafting the description:
+
+1. Keyword Usage:
+   - Analyze the provided keywords and prioritize them based on relevance and search potential.
+   - Incorporate as many keywords as possible into the description, ensuring they flow naturally within the text.
+   - Use variations of the keywords where appropriate to increase the range of potential search matches.
+
+2. Tone Implementation:
+   - Carefully read and understand the specified tone.
+   - Ensure that every sentence in your description aligns with this tone, maintaining consistency throughout.
+
+3. Utilizing the Video Structure:
+   - Examine the JSON structure of the video presentation.
+   - Use this structure as a guide to create a comprehensive outline of the video's content.
+   - Highlight key points, main topics, and any special features or segments of the video.
+
+4. Description Components:
+   - Start with a compelling hook that incorporates high-priority keywords and captures viewer interest.
+   - Provide a brief overview of what viewers can expect from the video.
+   - Break down the main sections or topics covered in the video, using the structure as a guide.
+   - Highlight any special features, guest appearances, or unique aspects of the video.
+   - Include a call-to-action encouraging viewers to like, comment, and subscribe.
+
+5. SEO Optimization:
+   - Place important keywords near the beginning of the description.
+   - Use natural language and avoid keyword stuffing.
+   - Include relevant links to the creator's social media, website, or related content when appropriate.
+
+6. Hashtags and Length:
+   - Add relevant hashtags at the end of the description, using keywords and popular related terms.
+   - Ensure the description exceeds 500 words while remaining engaging and informative.
+   - Break the description into easily readable paragraphs.
+
+7. Compelling Elements:
+   - Use questions to engage the viewer and encourage them to watch the video.
+   - Highlight the value proposition - what will viewers gain or learn from watching?
+   - Include any time stamps for key moments in the video if applicable.
+
+8. Final Check:
+   - Review the description to ensure it accurately represents the video content.
+   - Verify that the tone is consistent and all required elements are included.
+   - Double-check that you've used as many provided keywords as possible.
+
+9. Create your output as a JSON object with the following structure:
+   {
+     "description": "YouTube video description ..."
+   }
+   Please provide your output in the exact JSON format specified, with no additional text or explanations. Remember to exceed 500 words, use the specified tone, incorporate as many keywords as possible, and add relevant hashtags at the end.
+
+`
+
+export const enhancedslidesprompt = `
+You are an expert at creating TED-quality keynote presentations. Your task is to create a compelling presentation based on the given topic. Follow these instructions carefully to produce a structured, parseable JSON response.
+
+Input:
+<topic>
+{{PRESENTATION_TOPIC}}
+</topic>
+
+Steps to create the presentation:
+1. Analyze the topic and determine the key takeaway.
+2. Develop a narrative flow for the presentation, consisting of 8-12 main points.
+3. Create slide content for each point in the narrative flow.
+4. Ensure the presentation tells a cohesive story, building towards the key takeaway.
+
+For each slide:
+- Create a concise, engaging title
+- Develop 3-5 bullet points, each with 5-10 words maximum
+- Ensure the content flows logically from one slide to the next
+
+Output instructions:
+Provide your response in a structured JSON format with the following sections:
+1. FLOW: An array of 8-12 bullets (max 10 words each) representing the narrative flow of the presentation.
+2. DESIRED_TAKEAWAY: The key takeaway of the presentation in 1-3 sentences.
+3. PRESENTATION: An array of slide objects, each containing:
+   - slide_title: The title of the slide
+   - slide_content: An array of 3-5 bullet points for the slide content
+
+Your response should strictly adhere to the following JSON structure, without any additional text or explanations:
+
+{
+  "FLOW": ["<flow bullet 1>", "<flow bullet 2>", ...],
+  "DESIRED_TAKEAWAY": "<Text of the desired takeaway of presentation...>",
+  "PRESENTATION": [
+    {
+      "slide_title": "<Title of each slide>",
+      "slide_content": ["<bullet 1 of content of this slide>", "<bullet 2 of content of this slide>", ...]
+    },
+    ...
+  ]
+}
+
+Ensure that your response is a valid JSON object that can be parsed without errors.
 
 `
