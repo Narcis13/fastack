@@ -11,7 +11,29 @@ const model=ref("llama3")
 //const models=["llama3","zephyr","gpt-4o",'llama-3-sonar-large-32k-online']
 //const description=ref("You are going to create extremely good and captivating video about ")
 const topic = ref()
+async function save(){
 
+
+    await $fetch("/api/ai/videogenerate", {
+         method: "POST",
+        headers: {
+         
+        },
+         body: {
+            topic:generatedVideoStore.description,
+            hooksandtitles:generatedVideoStore.elements.hooksandtitles,
+            keywords:generatedVideoStore.elements.keywords,
+            slides:generatedVideoStore.elements.slides,
+            narrative:generatedVideoStore.elements.narrative,
+            imageprompts:generatedVideoStore.elements.imageprompts,
+            description:generatedVideoStore.elements.description
+    //       model:model.value,
+    //       topic:topic.value,  
+    //       description:description.value  
+     },
+      });
+
+}
 async function start(){
      console.log('starting....')
      $q.loading.show({
@@ -47,11 +69,11 @@ async function start(){
             <!-- <q-input class="q-mt-sm" outlined v-model="topic" label="Topic" /> -->
             <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.description" type="textarea" label="Description" />
             <q-input class="q-mt-sm" outlined v-model="generatedVideoStore.audience"  label="Audience" />
-            <q-input class="q-mt-sm q-mb-xl" outlined v-model="generatedVideoStore.tone"  label="Tone" />
-            <!-- <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />
+            <q-input class="q-mt-sm q-mb-md" outlined v-model="generatedVideoStore.tone"  label="Tone" />
+            <!-- <q-select :options="generatedVideoStore.models" class="q-mt-sm q-mb-md" outlined v-model="model" label="AI Model" />-->
             <div class="flex flex-center">
-                <q-btn class="q-mb-md" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="start" label="Start" style="max-width: 200px;"/>
-            </div> -->
+                <q-btn class="q-mb-xl" color="grey-4" text-color="purple" glossy unelevated icon="camera_enhance" @click="save" label="Save iteration" style="max-width: 200px;"/>
+            </div> 
            
             <div >
                 <div class="q-gutter-y-md" style="max-width: 980px">

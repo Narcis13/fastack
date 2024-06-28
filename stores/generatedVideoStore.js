@@ -13,7 +13,8 @@ export const useGeneratedVideoStore = defineStore('generatedStore',()=>{
     keywords:{},
     slides:{},
     narrative:{},
-    imageprompts:{}
+    imageprompts:{},
+    description:{}
   })
   async function runAgent(agent, model,systemprompt, userprompt){
     console.log('starting:',agent)

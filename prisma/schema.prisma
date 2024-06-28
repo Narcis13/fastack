@@ -12,3 +12,18 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+
+model iteraratiivideo {
+  id          Int       @id @default(autoincrement())
+  topic  String @db.VarChar(512)
+  titlesandhooks  String @db.Text
+  keywords  String @db.VarChar(512)
+  slides  String @db.Text
+  narrative  String @db.Text
+  imageprompts  String @db.Text
+  description  String @db.Text
+  stare           String           @db.VarChar(24) @default("activ")
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime? @updatedAt
+}
